@@ -30,44 +30,50 @@
 // }).listen(3200);
 
 
-const http = require('http')
-const fs = require('fs')
-const querySrting = require('querystring')
+const http = require('http');
+const fs = require('fs');
+const querystring = require('querystring');
 
 http.createServer((req, resp) => {
-    fs.readFile('form2.html', 'utf-8', (error, data) => {
-        if (error) {
-            resp.writeHead(500, {
-                'Content-Type': 'text/plain'
 
-            })
-            resp.end('Internal error')
-            return
-        }
-        resp.writeHead(200, {
-            'Content-Type': 'text/html'
-        })
-        if (req.url == '/') {
-            resp.write(data)
-           
+    if (req.url === '/' ) {
+        fs.readFile('form2.html', 'utf-8', (error, data) => {
+            if (error) {
+                resp.writeHead(500, { 'Content-Type': 'text/plain' });
+                resp.end('Internal error');
+                return;
+            }
+            resp.writeHead(200, { 'Content-Type': 'text/html' });
+            resp.end(data);
+        });
+    }
 
+    else if (req.url === '/submit') {
+        let userData = [];
 
-        } else if (req.url == '/submit') {
-             let userData = [];
-            req.on('data', (chunk) => {
-                userData.push(chunk)
-            })
-            req.on('end', () => {
+        req.on('data', chunk => {
+            userData.push(chunk);
+        });
 
-                let rawData = Buffer.concat(userData).toString();
-                let readableData = querySrting.parse(rawData)
+        req.on('end', () => {
+            let rawData = Buffer.concat(userData).toString();
+            let readableData = querystring.parse(rawData);
 
-                console.log(readableData)
-                
-            })
-            resp.write('submitted')
-        }
-        resp.end()
-    })
+            fs.writeFile(
+                readableData.name + '.txt',
+                JSON.stringify(readableData, null, 2),
+                'utf-8',
+                (err) => {
+                    if (err) {
+                        resp.end('Internal server error');
+                        return;
+                    }
 
-}).listen(3500)
+                    resp.end('Form submitted & file created');
+                }
+            );
+        });
+    }
+
+}).listen(3500);
+
