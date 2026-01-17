@@ -1,1 +1,4 @@
-it is redwow now it is updatedwow now it is updatedwow now it is updatedwow now it is updatedwow now it is updatedwow now it is updatedwow now it is updatedwow now it is updatedwow now it is updatedwow now it is updatedwow now it is updatedwow now it is updatedwow now it is updatedwow now it is updatedwow now it is updatedwow now it is updatedwow now it is updatedwow now it is updatedwow now it is updatedwow now it is updatedwow now it is updatedwow now it is updatedwow now it is updatedwow now it is updatedwow now it is updated
+it is redwow now it is updatedwow 
+
+by terminal
+npm nodemon fsCrud.js write name
